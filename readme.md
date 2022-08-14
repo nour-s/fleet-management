@@ -8,18 +8,18 @@ In this application, we want you to design a small fleet management system where
 
 The system has two different types of shipments that can be transported in vehicles and unloaded at delivery points. Delivery points where the shipments will go, the barcodes of the shipments and the desi (size of the shipments) are stored on the shipment.
 
-~~~~
+```
 Shipment Types:
 * Package: Refers to a single good.
 * Sack: Refers to shipment type that consists more than one good.
-~~~~
+```
 
-~~~~
+```
 There are three different delivery points in the system.
 * Branch: Only packages can be unloaded. Sacks and packages in sacks can not be unloaded.
 * Distribution Center: Sacks, packages in sacks and packages that are not assigned to a sack can be unloaded.
 * Transfer Center: Only sacks and packages in sacks can be unloaded.
-~~~~
+```
 
 Delivery points may not unload shipments that do not comply with the above conditions. In such a case, that shipment should be skipped and the other shipments requested to be unloaded should be tried.
 
@@ -35,74 +35,101 @@ If the sack itself is unloaded from the vehicle before the shipments inside the 
 
 Vehicles should go to the delivery points assigned to them and ensure that the relevant shipments are unloaded at the relevant delivery points.
 
-
 ### Table of States
 
 You can think of it as an enum or a table.
 
 | Package State Names | Value |
-|----------------|-------|
-| Created | 1 |
-| Loaded into Sack | 2 |
-| Loaded | 3 |
-| Unloaded | 4 |
+| ------------------- | ----- |
+| Created             | 1     |
+| Loaded into Sack    | 2     |
+| Loaded              | 3     |
+| Unloaded            | 4     |
 
 | Sack State Names | Value |
-|----------------|-------|
-| Created | 1 | 
-| Loaded | 3 |
-| Unloaded | 4 |
+| ---------------- | ----- |
+| Created          | 1     |
+| Loaded           | 3     |
+| Unloaded         | 4     |
 
-To set up the system above: 
+To set up the system above:
 We expect you to store the following parameters in a predefined way in a database of your choice. You can assign the data to the database of your choice in any way you want. You can improve your database (can also be in memory) and domain modelling in accordance with the following items.
+
+### Package State
+
+```mermaid
+flowchart TD
+    A[Created] --> B{Is it in Sack?}
+    B -->|Yes| C[Loaded In Sack]
+    B ---->|No| E[Loaded]
+    C -->|Unload| F[Unloaded]
+    E -->|Unload| F[Unloaded]
+```
+
+### Sack State/I/ Not sure if the sack goes in a Loaded state
+
+```mermaid
+flowchart TD
+    A[Start] -->|Create| B[Created]
+    B -->|Load| C[Loaded]
+    C -->|Unload| D[Unloaded]
+```
 
 **1.** You can create the delivery points in the databases you choose with the following data.
 
+### Delivery Points Table
+
 | Delivery Point Name | Value |
-|----------------|-------|
-| Branch | 1 | 
-| Distribution Centre | 2 |
-| Transfer Centre | 3 |
+| ------------------- | ----- |
+| Branch              | 1     |
+| Distribution Centre | 2     |
+| Transfer Centre     | 3     |
 
-**2.**	You can create the sacks in the databases you choose with the following data.
+**2.** You can create the sacks in the databases you choose with the following data.
 
-| Barcode | Delivery Point to be unloaded at |
-|----------------|-------|
-| C725799 | 2 | 
-| C725800 | 3 |
+### Sack Table
 
-**3.**	You can create the packages in the databases you choose with the following data.
+| Barcode | Delivery Point Type to be unloaded at |
+| ------- | ------------------------------------- |
+| C725799 | 2                                     |
+| C725800 | 3                                     |
 
-| Barcode | Delivery Point to be unloaded at | Desi |
-|----------------|-------|-------|
-| P7988000121 | 1 | 5 |
-| P7988000122 | 1 | 5 |
-| P7988000123 | 1 | 9 |
-| P8988000120 | 2 | 33 |
-| P8988000121 | 2 | 17 |
-| P8988000122 | 2 | 26 |
-| P8988000123 | 2 | 35 |
-| P8988000124 | 2 | 1 |
-| P8988000125 | 2 | 200 |
-| P8988000126 | 2 | 50 |
-| P9988000126 | 3 | 15 |
-| P9988000127 | 3 | 16 |
-| P9988000128 | 3 | 55 |
-| P9988000129 | 3 | 28 |
-| P9988000130 | 3 | 17 |
+**3.** You can create the packages in the databases you choose with the following data.
 
-**4.**	You can create the packages to be loaded in sacks in the databases you choose with the following data.
+### Package Table
 
-| Barcode | Barcode of the sack |
-|----------------|-------|
-| P8988000122 | C725799 | 
-| P8988000126 | C725799 |
-| P9988000128 | C725800 | 
-| P9988000129 | C725800 |
+| Barcode     | Delivery Point to be unloaded at | Desi |
+| ----------- | -------------------------------- | ---- |
+| P7988000121 | 1                                | 5    |
+| P7988000122 | 1                                | 5    |
+| P7988000123 | 1                                | 9    |
+| P8988000120 | 2                                | 33   |
+| P8988000121 | 2                                | 17   |
+| P8988000122 | 2                                | 26   |
+| P8988000123 | 2                                | 35   |
+| P8988000124 | 2                                | 1    |
+| P8988000125 | 2                                | 200  |
+| P8988000126 | 2                                | 50   |
+| P9988000126 | 3                                | 15   |
+| P9988000127 | 3                                | 16   |
+| P9988000128 | 3                                | 55   |
+| P9988000129 | 3                                | 28   |
+| P9988000130 | 3                                | 17   |
+
+**4.** You can create the packages to be loaded in sacks in the databases you choose with the following data.
+
+### Sack Package Table
+
+| Barcode     | Barcode of the sack |
+| ----------- | ------------------- |
+| P8988000122 | C725799             |
+| P8988000126 | C725799             |
+| P9988000128 | C725800             |
+| P9988000129 | C725800             |
 
 We expect you to develop a rest endpoint that receives the following json content for the vehicle to distribute the packages to the delivery points. In the first step, you must switch all the packages and sacks listed and loaded into the appropriate sack to the "loaded" state. You should then unload all available shipments at the delivery points in the list provided and update their status to "unloaded". Note: Vehicle property is provided for information purposes only.
 
-~~~~
+```
 {
   "vehicle": "34 TL 34",
   "route": [
@@ -137,7 +164,7 @@ We expect you to develop a rest endpoint that receives the following json conten
     }
   ]
 }
-~~~~
+```
 
 **Test Results**
 
@@ -152,7 +179,7 @@ We expect you to develop a rest endpoint that receives the following json conten
 
 **Expected Result:**
 
-~~~~
+```
 {
   "vehicle": "34 TL 34",
   "route": [
@@ -187,7 +214,7 @@ We expect you to develop a rest endpoint that receives the following json conten
     }
   ]
 }
-~~~~
+```
 
 **You should be aware of the following conventions while you are working on this application:**
 
