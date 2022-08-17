@@ -23,4 +23,14 @@ public class SackTests
         // Assert
         sack.Packages.Single(x => x.Barcode == package.Barcode);
     }
+
+    [Fact]
+    public void Sack_Should_Not_Add_Null_Package()
+    {
+        // Arrange
+        var sack = new AutoFaker<Sack>().Generate();
+
+        // Act && Assert
+        Assert.Throws<ArgumentNullException>(() => sack.AddPackage(null));
+    }
 }
