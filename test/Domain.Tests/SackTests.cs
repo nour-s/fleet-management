@@ -31,6 +31,6 @@ public class SackTests
         var sack = new AutoFaker<Sack>().Generate();
 
         // Act && Assert
-        Assert.Throws<ArgumentNullException>(() => sack.AddPackage(null));
+        Assert.Throws<ArgumentNullException>(() => sack.AddPackage(null!));
     }
 }

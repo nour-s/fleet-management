@@ -12,6 +12,8 @@ public record Sack(
 
     public void AddPackage(Package package)
     {
+        ArgumentNullException.ThrowIfNull(package);
+
         packages.Add(package);
     }
 }
