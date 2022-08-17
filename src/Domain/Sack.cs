@@ -8,10 +8,10 @@ public record Sack(
 {
     private List<Package> packages = new List<Package>();
 
-    ReadOnlyCollection<Package> Packages => packages.AsReadOnly();
+    public ReadOnlyCollection<Package> Packages => packages.AsReadOnly();
 
     public void AddPackage(Package package)
     {
-        throw new Exception();
+        packages.Add(package);
     }
 }

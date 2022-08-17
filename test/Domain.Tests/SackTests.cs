@@ -1,5 +1,3 @@
-using Domain;
-
 namespace Domain.Tests;
 
 public class SackTests
@@ -15,7 +13,14 @@ public class SackTests
     [Fact]
     public void Sack_Can_Add_Package()
     {
-        var sack = new Sack("12345", DeliveryPointType.Branch);
-        sack.AddPackage(null);
+        // Arrange
+        var sack = new AutoFaker<Sack>().Generate();
+        var package = new AutoFaker<Package>().Generate();
+
+        // Act
+        sack.AddPackage(package);
+
+        // Assert
+        sack.Packages.Single(x => x.Barcode == package.Barcode);
     }
 }
