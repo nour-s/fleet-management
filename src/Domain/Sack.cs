@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 
 namespace Domain;
+
 public record Sack(
     string Barcode,
     DeliveryPointType DeliveryPointType)
@@ -8,4 +9,9 @@ public record Sack(
     private List<Package> packages = new List<Package>();
 
     ReadOnlyCollection<Package> Packages => packages.AsReadOnly();
+
+    public void AddPackage(Package package)
+    {
+        throw new Exception();
+    }
 }

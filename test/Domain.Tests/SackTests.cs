@@ -11,4 +11,11 @@ public class SackTests
         Assert.Equal("12345", sack.Barcode);
         Assert.Equal(DeliveryPointType.Branch, sack.DeliveryPointType);
     }
+
+    [Fact]
+    public void Sack_Can_Add_Package()
+    {
+        var sack = new Sack("12345", DeliveryPointType.Branch);
+        sack.AddPackage(null);
+    }
 }
