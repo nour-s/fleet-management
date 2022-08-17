@@ -10,6 +10,8 @@ public record Sack(
 
     public ReadOnlyCollection<Package> Packages => packages.AsReadOnly();
 
+    public SackState State { get; private set; } = SackState.Created;
+
     public void AddPackage(Package package)
     {
         ArgumentNullException.ThrowIfNull(package);

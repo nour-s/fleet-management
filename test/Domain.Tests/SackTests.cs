@@ -33,4 +33,18 @@ public class SackTests
         // Act && Assert
         Assert.Throws<ArgumentNullException>(() => sack.AddPackage(null!));
     }
+
+    [Fact]
+    public void Sack_Should_Have_Created_State_When_First_Initialized()
+    {
+        // Arrange
+        var sack = new AutoFaker<Sack>().Configure(x => x.WithSkip<SackState>()).Generate();
+        var expectedState = SackState.Created;
+
+        // Act
+        var actualState = sack.State;
+
+        // Assert
+        Assert.Equal(expectedState, actualState);
+    }
 }
