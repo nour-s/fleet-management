@@ -21,6 +21,11 @@ public record Sack(
 
     public void Unload(DeliveryPointType deliveryPoint)
     {
+        foreach (var package in packages)
+        {
+            package.Unload(deliveryPoint);
+        }
+
         State = SackState.Unloaded;
     }
 }
