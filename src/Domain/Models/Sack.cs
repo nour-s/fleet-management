@@ -21,6 +21,6 @@ public record Sack(
 
     public void Unload(DeliveryPointType deliveryPoint)
     {
-        throw new NotImplementedException();
+        State = SackState.Unloaded;
     }
 }
