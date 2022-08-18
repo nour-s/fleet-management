@@ -49,11 +49,22 @@ public class SackTests
     }
 
     [Fact]
-    public void Sack_Unload_Unload_All_Packages()
+    public void Sack_Unload_Should_First_Unload_All_Packages()
     {
-        var sack = new AutoFaker<Sack>().Configure(x => x.WithSkip<SackState>()).Generate();
+        // Arrange
+        var sack = new AutoFaker<Sack>()
+            .Configure(x => x.WithSkip<SackState>())
+            .RuleFor(x => x.DeliveryPointType, DeliveryPointType.Branch)
+            .Generate();
+
+        // Add random packages
+        sack.AddPackage(new AutoFaker<Package>().Generate());
+        sack.AddPackage(new AutoFaker<Package>().Generate());
 
         // Act
         sack.Unload(DeliveryPointType.Branch);
+
+        // Assert
+        Assert.All(sack.Packages, x => Assert.Equal(PackageState.Unloaded, x.State));
     }
 }
