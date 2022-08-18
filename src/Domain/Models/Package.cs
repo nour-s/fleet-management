@@ -6,4 +6,9 @@ public record Package(
     int Desi)
 {
     public PackageState State { get; private set; } = PackageState.Created;
+
+    internal void Unload(DeliveryPointType deliveryPoint)
+    {
+        State = PackageState.Unloaded;
+    }
 }
