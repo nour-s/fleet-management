@@ -17,6 +17,7 @@ public record Sack(
         ArgumentNullException.ThrowIfNull(package);
 
         packages.Add(package);
+        package.Load(this);
     }
 
     public void Unload(DeliveryPointType deliveryPoint)
