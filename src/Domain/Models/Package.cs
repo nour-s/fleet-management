@@ -20,6 +20,11 @@ public record Package(
 
     public void Unload(DeliveryPointType deliveryPoint)
     {
+        if (DeliveryPointType != deliveryPoint)
+        {
+            throw new ArgumentException($"Package {Barcode} can't be unloaded to {deliveryPoint}");
+        }
+
         State = PackageState.Unloaded;
     }
 }

@@ -42,4 +42,16 @@ public class PackageTest
         // Assert
         Assert.Equal(PackageState.Unloaded, package.State);
     }
+
+    [Fact]
+    public void Package_Should_Not_Unload_To_Wrong_Delivery_Point()
+    {
+        // Arrange
+        var package = new Package("12345", DeliveryPointType.Branch, 1);
+        var wrongDeliveryPoint = DeliveryPointType.DistributionCentre;
+
+        // Act && Assert
+        Assert.Throws<ArgumentException>(() => package.Unload(wrongDeliveryPoint));
+    }
+
 }
