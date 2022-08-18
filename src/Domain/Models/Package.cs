@@ -7,7 +7,7 @@ public record Package(
 {
     public PackageState State { get; private set; } = PackageState.Created;
 
-    internal void Unload(DeliveryPointType deliveryPoint)
+    public void Unload(DeliveryPointType deliveryPoint)
     {
         State = PackageState.Unloaded;
     }

@@ -11,4 +11,17 @@ public class PackageTest
         Assert.Equal(DeliveryPointType.Branch, package.DeliveryPointType);
         Assert.Equal(1, package.Desi);
     }
+
+    [Fact]
+    public void Package_Can_Unload()
+    {
+        // Arrange
+        var package = new AutoFaker<Package>().Generate();
+
+        // Act
+        package.Unload(DeliveryPointType.Branch);
+
+        // Assert
+        Assert.Equal(PackageState.Unloaded, package.State);
+    }
 }
