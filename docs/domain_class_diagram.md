@@ -1,13 +1,13 @@
 ```mermaid
 classDiagram
-    Sack  "0..1" *-- "1..*" Package: Packages
+    Sack  "0..1" *-- "0..*" Package: Packages
 
     class Sack{
-        -int DeliveryPoint
-        +int Desi
+        +string Barcode
+        +int DeliveryPoint
 
         +AddPackage(Package)
-        +Unload()
+        +Unload(deliveryPoint)
         +UnloadPackage(bacode, deliveryPoint)
     }
 

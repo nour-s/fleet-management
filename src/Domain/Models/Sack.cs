@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace Domain;
+namespace Domain.Models;
 
 public record Sack(
     string Barcode,
