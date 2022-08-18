@@ -67,4 +67,19 @@ public class SackTests
         // Assert
         Assert.All(sack.Packages, x => Assert.Equal(PackageState.Unloaded, x.State));
     }
+
+    [Fact]
+    public void Sack_Should_Not_Unload_To_Wrong_Delivery_Point()
+    {
+        // Arrange
+        var sack = new AutoFaker<Sack>()
+            .Configure(x => x.WithSkip<SackState>())
+            .RuleFor(x => x.DeliveryPointType, DeliveryPointType.TransferCentre)
+            .Generate();
+
+        var wrongDeliveryPoint = DeliveryPointType.DistributionCentre;
+
+        // Act && Assert
+        Assert.Throws<ArgumentException>(() => sack.Unload(wrongDeliveryPoint));
+    }
 }

@@ -22,6 +22,11 @@ public record Sack(
 
     public void Unload(DeliveryPointType deliveryPoint)
     {
+        if (DeliveryPointType != deliveryPoint)
+        {
+            throw new ArgumentException($"Sack {Barcode} can't be unloaded to {deliveryPoint}");
+        }
+
         foreach (var package in packages)
         {
             package.Unload(deliveryPoint);
