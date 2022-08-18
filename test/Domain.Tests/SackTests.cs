@@ -47,4 +47,13 @@ public class SackTests
         // Assert
         Assert.Equal(expectedState, actualState);
     }
+
+    [Fact]
+    public void Sack_Unload_Unload_All_Packages()
+    {
+        var sack = new AutoFaker<Sack>().Configure(x => x.WithSkip<SackState>()).Generate();
+
+        // Act
+        sack.Unload(DeliveryPointType.Branch);
+    }
 }

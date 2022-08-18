@@ -18,4 +18,9 @@ public record Sack(
 
         packages.Add(package);
     }
+
+    public void Unload(DeliveryPointType deliveryPoint)
+    {
+        throw new NotImplementedException();
+    }
 }
