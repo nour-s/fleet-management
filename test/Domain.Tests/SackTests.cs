@@ -57,9 +57,13 @@ public class SackTests
             .RuleFor(x => x.DeliveryPointType, DeliveryPointType.Branch)
             .Generate();
 
+        var packageFaker = new AutoFaker<Package>()
+            .Configure(x => x.WithSkip<PackageState>())
+            .RuleFor(x => x.DeliveryPointType, DeliveryPointType.Branch);
+
         // Add random packages
-        sack.AddPackage(new AutoFaker<Package>().Generate());
-        sack.AddPackage(new AutoFaker<Package>().Generate());
+        sack.AddPackage(packageFaker.Generate());
+        sack.AddPackage(packageFaker.Generate());
 
         // Act
         sack.Unload(DeliveryPointType.Branch);
