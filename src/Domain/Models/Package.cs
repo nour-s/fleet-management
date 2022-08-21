@@ -12,10 +12,9 @@ public record Package(
     /// </summary>
     public Sack? Sack { get; private set; }
 
-    public void Load(Sack sack)
+    public void Load()
     {
-        Sack = sack;
-        State = PackageState.LoadedInSack;
+        State = Sack != null ? PackageState.LoadedInSack : PackageState.Loaded;
     }
 
     public void Unload(DeliveryPointType deliveryPoint)
