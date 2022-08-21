@@ -15,9 +15,16 @@ public record Sack(
     public void AddPackage(Package package)
     {
         ArgumentNullException.ThrowIfNull(package);
-
         packages.Add(package);
-        package.Load(this);
+    }
+
+    public void Load()
+    {
+        State = SackState.Loaded;
+        foreach (var package in packages)
+        {
+            package.Load();
+        }
     }
 
     public void Unload(DeliveryPointType deliveryPoint)
