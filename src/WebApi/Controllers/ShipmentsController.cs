@@ -1,13 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
-
 namespace WebApi;
 
 [ApiController]
 [Route("[controller]")]
 public class ShipmentsController : Controller
 {
-    [HttpGet("deliver")]
-    public IActionResult Deliver()
+    [HttpPost("deliver")]
+    public IActionResult Deliver([FromBody] Delivery request)
     {
         return Ok();
     }
