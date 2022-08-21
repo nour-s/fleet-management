@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+
 
 namespace WebApi.Tests.Controllers;
 
@@ -9,9 +9,10 @@ public class ShipmentsControllerTests
     {
         // Arrange
         var controller = new ShipmentsController();
+        var fakeRequest = new AutoFaker<Delivery>().Generate();
 
         // Act
-        var result = controller.Deliver();
+        var result = controller.Deliver(fakeRequest);
 
         // Assert
         Assert.IsType<OkResult>(result);
