@@ -16,28 +16,30 @@ public class PackageTest
     public void Package_Can_Load_Into_Sack()
     {
         // Arrange
-
-        var sack = new AutoFaker<Sack>().Generate();
         var package = new AutoFaker<Package>().Generate();
 
         // Act
-        package.Load(sack);
+        package.Load();
 
         // Assert
 
         // clone the original sack so we make sure it is not a reference comparison.
-        var actualSack = package.Sack! with { };
-        Assert.Equal(actualSack, package.Sack);
+        Assert.Equal(PackageState.LoadedInSack, package.State);
     }
 
     [Fact]
     public void Package_Can_Unload()
     {
+        var deliveryPoint = DeliveryPointType.Branch;
+
         // Arrange
-        var package = new AutoFaker<Package>().Generate();
+        var package = new AutoFaker<Package>()
+        .Configure(x => x.WithSkip<PackageState>())
+        .RuleFor(x => x.DeliveryPointType, deliveryPoint)
+        .Generate();
 
         // Act
-        package.Unload(DeliveryPointType.Branch);
+        package.Unload(deliveryPoint);
 
         // Assert
         Assert.Equal(PackageState.Unloaded, package.State);
