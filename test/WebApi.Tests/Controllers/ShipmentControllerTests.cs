@@ -33,6 +33,6 @@ public class ShipmentsControllerTests
         Assert.IsType<OkResult>(result);
         var comparer = new CompareLogic(new ComparisonConfig());
 
-        _mediator.Verify(x => x.Publish(It.Is<DeliverShipmentsCommand>(x => comparer.Compare(x, fakeRequest).AreEqual), It.IsAny<CancellationToken>()), Times.Once);
+        _mediator.Verify(x => x.Publish(It.Is<DeliverShipmentsCommand>(x => comparer.Compare(x.Delivery, fakeRequest).AreEqual), It.IsAny<CancellationToken>()), Times.Once);
     }
 }

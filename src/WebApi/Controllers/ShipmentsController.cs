@@ -1,3 +1,4 @@
+using Application.Commands;
 using MediatR;
 
 namespace WebApi;
@@ -16,6 +17,7 @@ public class ShipmentsController : Controller
     [HttpPost("deliver")]
     public IActionResult Deliver([FromBody] Delivery request)
     {
+        _mediator.Publish(new DeliverShipmentsCommand(request));
         return Ok();
     }
 }
