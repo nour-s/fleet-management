@@ -1,7 +1,8 @@
-
-
 using MediatR;
 using Moq;
+using Application.Commands;
+using System.Collections;
+using KellermanSoftware.CompareNetObjects;
 
 namespace WebApi.Tests.Controllers;
 
@@ -30,5 +31,8 @@ public class ShipmentsControllerTests
 
         // Assert
         Assert.IsType<OkResult>(result);
+        var comparer = new CompareLogic(new ComparisonConfig());
+
+        _mediator.Verify(x => x.Publish(It.Is<DeliverShipmentsCommand>(x => comparer.Compare(x, fakeRequest).AreEqual), It.IsAny<CancellationToken>()), Times.Once);
     }
 }
