@@ -1,4 +1,6 @@
+using Application.Commands;
 using Application.Persistence;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +11,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddPersistence(this IServiceCollection services)
     {
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        services.AddTransient<IRequestHandler<DeliverShipmentsCommand, Unit>, DeliverShipmentsCommandHandler>();
+
         services.AddDbContext<AppDbContext>(options =>
         {
             options.UseInMemoryDatabase("AppDbContext")
