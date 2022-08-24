@@ -5,6 +5,8 @@ public record Package(
     DeliveryPointType DeliveryPointType,
     int Desi)
 {
+    public int Id { get; init; }
+
     public PackageState State { get; private set; } = PackageState.Created;
 
     /// <summary>

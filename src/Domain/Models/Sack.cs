@@ -6,6 +6,8 @@ public record Sack(
     string Barcode,
     DeliveryPointType DeliveryPointType)
 {
+    public int Id { get; init; }
+
     private List<Package> packages = new List<Package>();
 
     public ReadOnlyCollection<Package> Packages => packages.AsReadOnly();
