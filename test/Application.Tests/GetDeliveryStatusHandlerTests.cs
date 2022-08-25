@@ -51,7 +51,7 @@ public class GetDeliveryStatusHandlerTests
             .Setup(x => x.SingleOrDefaultAsync(It.IsAny<Expression<Func<Package, bool>>>(), It.IsAny<Expression<Func<Package, object>>>()))
                 .ReturnsAsync(package);
 
-        var query = new GetDeliveryStatus(delivery);
+        var query = new GetDeliveryStatusQuery(delivery);
 
         // Act
 
@@ -93,7 +93,7 @@ public class GetDeliveryStatusHandlerTests
             .Setup(x => x.SingleOrDefaultAsync(It.IsAny<Expression<Func<Sack, bool>>>()))
                 .ReturnsAsync(sack);
 
-        var query = new GetDeliveryStatus(delivery);
+        var query = new GetDeliveryStatusQuery(delivery);
 
         // Act
 

@@ -15,7 +15,7 @@ public static class DependencyInjection
     {
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddTransient<IRequestHandler<DeliverShipmentsCommand, Unit>, DeliverShipmentsCommandHandler>();
-        services.AddTransient<IRequestHandler<GetDeliveryStatus, Delivery>, GetDeliveryStatusHandler>();
+        services.AddTransient<IRequestHandler<GetDeliveryStatusQuery, Delivery>, GetDeliveryStatusHandler>();
 
         services.AddDbContext<AppDbContext>(options =>
         {

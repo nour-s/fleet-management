@@ -5,7 +5,7 @@ using WebApi.Models;
 
 namespace Application.Queries;
 
-public class GetDeliveryStatusHandler : IRequestHandler<GetDeliveryStatus, Delivery>
+public class GetDeliveryStatusHandler : IRequestHandler<GetDeliveryStatusQuery, Delivery>
 {
     private readonly IRepository<Package> _packageRepository;
     private readonly IRepository<Sack> _sackRepository;
@@ -16,7 +16,7 @@ public class GetDeliveryStatusHandler : IRequestHandler<GetDeliveryStatus, Deliv
         _sackRepository = sackRepository;
     }
 
-    public async Task<Delivery> Handle(GetDeliveryStatus query, CancellationToken cancellationToken)
+    public async Task<Delivery> Handle(GetDeliveryStatusQuery query, CancellationToken cancellationToken)
     {
         var delivery = query.Delivery;
 
