@@ -1,6 +1,8 @@
+using System.Reflection;
 using Application.Commands;
 using Application.Persistence;
 using Application.Queries;
+using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -13,6 +15,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddPersistence(this IServiceCollection services)
     {
+        services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddTransient<IRequestHandler<DeliverShipmentsCommand, Unit>, DeliverShipmentsCommandHandler>();
         services.AddTransient<IRequestHandler<GetDeliveryStatusQuery, Delivery>, GetDeliveryStatusHandler>();
