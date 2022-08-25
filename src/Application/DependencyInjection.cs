@@ -1,9 +1,11 @@
 using Application.Commands;
 using Application.Persistence;
+using Application.Queries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using WebApi.Models;
 
 namespace Application;
 
@@ -13,6 +15,7 @@ public static class DependencyInjection
     {
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddTransient<IRequestHandler<DeliverShipmentsCommand, Unit>, DeliverShipmentsCommandHandler>();
+        services.AddTransient<IRequestHandler<GetDeliveryStatus, Delivery>, GetDeliveryStatusHandler>();
 
         services.AddDbContext<AppDbContext>(options =>
         {
