@@ -56,4 +56,26 @@ public class PackageTest
         Assert.Throws<ArgumentException>(() => package.Unload(wrongDeliveryPoint));
     }
 
+    // Shipment should not be unloaded to a branch if there is a sack
+    [Fact]
+    public void Package_Should_Not_Unload_To_Branch_If_It_Is_In_Sack()
+    {
+        // Arrange
+        var package = new Package("12345", DeliveryPointType.Branch, 1) { Sack = new Sack("234", DeliveryPointType.Branch) };
+
+        // Act and Assert
+        Assert.Throws<ArgumentException>(() => package.Unload(DeliveryPointType.Branch));
+    }
+
+
+    // Shipment should not be unloaded to a branch if there is a sack
+    [Fact]
+    public void Package_Should_Not_Unload_To_TransferCentre_If_It_Is_Not_In_Sack()
+    {
+        // Arrange
+        var package = new Package("12345", DeliveryPointType.TransferCentre, 1) { Sack = null };
+
+        // Act and Assert
+        Assert.Throws<ArgumentException>(() => package.Unload(DeliveryPointType.TransferCentre));
+    }
 }

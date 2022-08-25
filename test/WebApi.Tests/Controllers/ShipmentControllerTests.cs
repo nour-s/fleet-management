@@ -1,7 +1,6 @@
 using MediatR;
 using Moq;
 using Application.Commands;
-using System.Collections;
 using KellermanSoftware.CompareNetObjects;
 using Application.Queries;
 

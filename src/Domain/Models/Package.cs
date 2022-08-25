@@ -26,6 +26,16 @@ public record Package(
             throw new ArgumentException($"Package {Barcode} can't be unloaded to {deliveryPoint}");
         }
 
+        if (Sack != null && deliveryPoint == DeliveryPointType.Branch)
+        {
+            throw new ArgumentException($"A Package {Barcode} without a sack can't be unloaded to {deliveryPoint}");
+        }
+
+        if (Sack == null && deliveryPoint == DeliveryPointType.TransferCentre)
+        {
+            throw new ArgumentException($"A Package {Barcode} without a sack can't be unloaded to {deliveryPoint}");
+        }
+
         State = PackageState.Unloaded;
     }
 }
