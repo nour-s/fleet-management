@@ -10,7 +10,7 @@ public class GetDeliveryStatusHandler : IRequestHandler<GetDeliveryStatus, Deliv
     private readonly IRepository<Package> _packageRepository;
     private readonly IRepository<Sack> _sackRepository;
 
-    public GetDeliveryStatusHandler(IRepository<Package> packageRepository, IRepository<Sack> sackRepository)
+    public GetDeliveryStatusHandler(IRepository<Sack> sackRepository, IRepository<Package> packageRepository)
     {
         _packageRepository = packageRepository;
         _sackRepository = sackRepository;
@@ -31,12 +31,12 @@ public class GetDeliveryStatusHandler : IRequestHandler<GetDeliveryStatus, Deliv
                 if (isItPackage)
                 {
                     var package = await _packageRepository.SingleOrDefaultAsync(x => x.Barcode == shipment.Barcode, x => x.Sack!);
-                    shipment.State = (int)package?.State!;
+                    shipment.State = (int?)package?.State!;
                 }
                 else
                 {
                     var sack = await _sackRepository.SingleOrDefaultAsync(x => x.Barcode == shipment.Barcode);
-                    shipment.State = (int)sack?.State!;
+                    shipment.State = (int?)sack?.State;
                 }
             }
         }

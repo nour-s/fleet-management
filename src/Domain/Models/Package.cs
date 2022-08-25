@@ -7,12 +7,12 @@ public record Package(
 {
     public int Id { get; init; }
 
-    public PackageState State { get; private set; } = PackageState.Created;
+    public PackageState State { get; internal set; } = PackageState.Created;
 
     /// <summary>
     /// The parent sack if exists
     /// </summary>
-    public Sack? Sack { get; private set; }
+    public Sack? Sack { get; internal set; }
 
     public void Load()
     {

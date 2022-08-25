@@ -12,7 +12,7 @@ public record Sack(
 
     public ReadOnlyCollection<Package> Packages => packages.AsReadOnly();
 
-    public SackState State { get; private set; } = SackState.Created;
+    public SackState State { get; internal set; } = SackState.Created;
 
     public void AddPackage(Package package)
     {
