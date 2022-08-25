@@ -1,4 +1,5 @@
 using Application.Commands;
+using Application.Queries;
 using MediatR;
 
 namespace WebApi;
@@ -15,9 +16,10 @@ public class ShipmentsController : Controller
     }
 
     [HttpPost("deliver")]
-    public IActionResult Deliver([FromBody] Delivery request)
+    public async Task<IActionResult> Deliver([FromBody] Delivery request)
     {
-        _mediator.Publish(new DeliverShipmentsCommand(request));
-        return Ok();
+        await _mediator.Publish(new DeliverShipmentsCommand(request));
+        var deliveryStatus = await _mediator.Send(new GetDeliveryStatusQuery(request));
+        return Ok(deliveryStatus);
     }
 }
