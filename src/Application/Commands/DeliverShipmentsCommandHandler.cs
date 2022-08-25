@@ -1,6 +1,7 @@
 using Application.Persistence;
 using Domain.Models;
 using MediatR;
+using WebApi.Models;
 
 namespace Application.Commands;
 
@@ -28,40 +29,11 @@ public class DeliverShipmentsCommandHandler : IRequestHandler<DeliverShipmentsCo
 
                 if (isItPackage)
                 {
-                    var package = await _packageRepository.SingleOrDefaultAsync(x => x.Barcode == shipment.Barcode, x => x.Sack!);
-
-                    if (package == null)
-                        continue;
-
-                    package.Load();
-
-                    try
-                    {
-                        package.Unload(deliveryPoint);
-                    }
-                    catch (ArgumentException)
-                    {
-                        // package can't be unloaded to this delivery point, we just skip.
-                        continue;
-                    }
+                    await HandleShipment(shipment, deliveryPoint);
                 }
                 else
                 {
-                    var sack = await _sackRepository.SingleOrDefaultAsync(x => x.Barcode == shipment.Barcode, x => x.Packages);
-                    if (sack == null)
-                        continue;
-
-                    sack.Load();
-
-                    try
-                    {
-                        sack.Unload(deliveryPoint);
-                    }
-                    catch (ArgumentException)
-                    {
-                        // sack can't be unloaded to this delivery point, we just skip.
-                        continue;
-                    }
+                    await HandleSack(shipment, deliveryPoint);
                 }
             }
         }
@@ -69,5 +41,43 @@ public class DeliverShipmentsCommandHandler : IRequestHandler<DeliverShipmentsCo
         await _packageRepository.SaveChangesAsync();
         await _sackRepository.SaveChangesAsync();
         return Unit.Value;
+    }
+
+    private async Task HandleShipment(Shipment shipment, DeliveryPointType deliveryPoint)
+    {
+        var package = await _packageRepository.SingleOrDefaultAsync(x => x.Barcode == shipment.Barcode, x => x.Sack!);
+
+        if (package == null)
+            return;
+
+        package.Load();
+
+        try
+        {
+            package.Unload(deliveryPoint);
+        }
+        catch (ArgumentException)
+        {
+            // package can't be unloaded to this delivery point, we just skip.
+        }
+    }
+
+    private async Task HandleSack(Shipment shipment, DeliveryPointType deliveryPoint)
+    {
+        var sack = await _sackRepository.SingleOrDefaultAsync(x => x.Barcode == shipment.Barcode, x => x.Packages);
+        if (sack == null)
+            return;
+
+        sack.Load();
+
+        try
+        {
+            sack.Unload(deliveryPoint);
+        }
+        catch (ArgumentException)
+        {
+            // sack can't be unloaded to this delivery point, we just skip.
+            return;
+        }
     }
 }

@@ -65,7 +65,6 @@ public class DeliverShipmentsCommandHandlerTests
         Assert.Equal(PackageState.Unloaded, package.State);
     }
 
-
     [Fact]
     public async Task Handle_Should_Process_A_Shipment_Of_Type_Sack()
     {
@@ -106,4 +105,6 @@ public class DeliverShipmentsCommandHandlerTests
         // Assert that the package is unloaded
         Assert.Equal(SackState.Unloaded, sack.State);
     }
+
+
 }
