@@ -5,6 +5,7 @@ using WebApi.Models;
 using Moq;
 using System.Linq.Expressions;
 using Bogus;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Tests;
 
@@ -18,9 +19,12 @@ public class DeliverShipmentsCommandHandlerTests
 
     public DeliverShipmentsCommandHandlerTests()
     {
+        var logger = new Mock<ILogger<DeliverShipmentsCommandHandler>>();
+
         _sut = new DeliverShipmentsCommandHandler(
             _sackRepositoryMock.Object,
-            _packageRepositoryMock.Object
+            _packageRepositoryMock.Object,
+            logger.Object
         );
     }
 

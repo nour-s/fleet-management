@@ -1,6 +1,7 @@
 using Application.Persistence;
 using Domain.Models;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using WebApi.Models;
 
 namespace Application.Commands;
@@ -11,10 +12,13 @@ public class DeliverShipmentsCommandHandler : IRequestHandler<DeliverShipmentsCo
 
     private readonly IRepository<Package> _packageRepository;
 
-    public DeliverShipmentsCommandHandler(IRepository<Sack> sackRepository, IRepository<Package> packageRepository)
+    private readonly ILogger<DeliverShipmentsCommandHandler> _logger;
+
+    public DeliverShipmentsCommandHandler(IRepository<Sack> sackRepository, IRepository<Package> packageRepository, ILogger<DeliverShipmentsCommandHandler> logger)
     {
         _sackRepository = sackRepository;
         _packageRepository = packageRepository;
+        _logger = logger;
     }
 
     public async Task<Unit> Handle(DeliverShipmentsCommand request, CancellationToken cancellationToken)
@@ -56,9 +60,10 @@ public class DeliverShipmentsCommandHandler : IRequestHandler<DeliverShipmentsCo
         {
             package.Unload(deliveryPoint);
         }
-        catch (ArgumentException)
+        catch (ArgumentException ex)
         {
             // package can't be unloaded to this delivery point, we just skip.
+            _logger.LogInformation(ex.Message);
         }
     }
 
@@ -74,9 +79,10 @@ public class DeliverShipmentsCommandHandler : IRequestHandler<DeliverShipmentsCo
         {
             sack.Unload(deliveryPoint);
         }
-        catch (ArgumentException)
+        catch (ArgumentException ex)
         {
             // sack can't be unloaded to this delivery point, we just skip.
+            _logger.LogInformation(ex.Message);
             return;
         }
     }
