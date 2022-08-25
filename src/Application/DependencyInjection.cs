@@ -56,7 +56,6 @@ public static class DependencyInjection
 
         sacks.Add(sack2);
 
-
         packages.Add(new Package("P7988000121", (DeliveryPointType)1, 5));
         packages.Add(new Package("P7988000122", (DeliveryPointType)1, 5));
         packages.Add(new Package("P7988000123", (DeliveryPointType)1, 9));
@@ -67,7 +66,7 @@ public static class DependencyInjection
         packages.Add(new Package("P8988000125", (DeliveryPointType)2, 200));
         packages.Add(new Package("P9988000126", (DeliveryPointType)3, 15));
         packages.Add(new Package("P9988000127", (DeliveryPointType)3, 16));
-        packages.Add(new Package(" P9988000130", (DeliveryPointType)3, 17));
+        packages.Add(new Package("P9988000130", (DeliveryPointType)3, 17));
 
         dbContext.SaveChanges();
     }
