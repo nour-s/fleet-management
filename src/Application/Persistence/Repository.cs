@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Persistence;
@@ -39,4 +40,23 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         _dbSet.Update(entity);
         await Task.CompletedTask;
     }
+
+    public Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return _dbSet.SingleOrDefaultAsync(predicate);
+    }
+
+    public Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
+    {
+        var query = _dbSet.AsQueryable();
+
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+
+        return query.SingleOrDefaultAsync(predicate);
+    }
+
+    public Task<int> SaveChangesAsync() => _dbContext.SaveChangesAsync();
 }
