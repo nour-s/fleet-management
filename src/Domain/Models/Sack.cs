@@ -48,4 +48,12 @@ public record Sack(
 
         State = SackState.Unloaded;
     }
+
+    internal void CheckIfAllShipmentsAreUnloaded()
+    {
+        if (_packages.Any() && _packages.All(x => x.State == PackageState.Unloaded))
+        {
+            State = SackState.Unloaded;
+        }
+    }
 }

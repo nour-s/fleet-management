@@ -104,4 +104,31 @@ public class SackTests
         // Act && Assert
         Assert.Throws<DomainException>(() => sack.Unload(wrongDeliveryPoint));
     }
+
+    // test if the sack gets unloaded when all packages of the sack are unloaded 
+    [Fact]
+    public void Sack_Should_Be_Unloaded_When_All_Packages_Are_Unloaded()
+    {
+        // Arrange
+        var destination = DeliveryPointType.TransferCentre;
+        var sack = new AutoFaker<Sack>()
+            .Configure(x => x.WithSkip<SackState>())
+            .RuleFor(x => x.DeliveryPointType, destination)
+            .Generate();
+
+        var packageFaker = new AutoFaker<Package>()
+            .Configure(x => x.WithSkip<PackageState>())
+            .RuleFor(x => x.DeliveryPointType, destination)
+            .RuleFor(x => x.Sack, sack);
+
+        // Add random packages
+        sack.AddPackage(packageFaker.Generate());
+        sack.AddPackage(packageFaker.Generate());
+
+        // Act
+        sack.Packages.ToList().ForEach(x => x.Unload(destination));
+
+        // Assert
+        Assert.Equal(SackState.Unloaded, sack.State);
+    }
 }

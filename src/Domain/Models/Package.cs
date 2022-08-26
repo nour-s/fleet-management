@@ -39,5 +39,10 @@ public record Package(
         }
 
         State = PackageState.Unloaded;
+
+        if (Sack != null)
+        {
+            Sack.CheckIfAllShipmentsAreUnloaded();
+        }
     }
 }
