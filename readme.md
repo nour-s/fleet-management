@@ -26,6 +26,7 @@ Check the docs folder for the class diagram and state diagram.
 #### Option 1: Using Visual Studio or Visual Studio Code:
 
 You can open the solution using either of them. You need the .NET 6 SDK to build and run the project which is automatically available with VS 2019 or higher.
+I used VS Code as you will notice from the `.vscode` folder
 
 #### Option 2: Using Docker:
 
@@ -157,3 +158,10 @@ I also used it to create the class diagram for reference.
 
 `Mermaid` is supported by Github if you inserted it in Markdown files. You can also install a VS Code client that can render Mermaid diagrams in Markdown files.
 Check this article for more information [Mermaid in Github](https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/)
+
+#### Live demo
+
+
+
+https://user-images.githubusercontent.com/1418564/187001504-04b02ec6-5636-49c9-9661-12370df853ed.mp4
+
