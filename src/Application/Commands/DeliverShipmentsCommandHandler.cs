@@ -4,6 +4,7 @@ using Domain.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using WebApi.Models;
+using ConsoleTables;
 
 namespace Application.Commands;
 
@@ -24,6 +25,8 @@ public class DeliverShipmentsCommandHandler : IRequestHandler<DeliverShipmentsCo
 
     public async Task<Unit> Handle(DeliverShipmentsCommand request, CancellationToken cancellationToken)
     {
+        var domainMessages = new List<(string Barcode, string Message)>();
+
         foreach (var route in request.Delivery.Routes)
         {
             var deliveryPoint = (DeliveryPointType)route.DeliveryPoint;
@@ -32,19 +35,29 @@ public class DeliverShipmentsCommandHandler : IRequestHandler<DeliverShipmentsCo
             {
                 var isItPackage = shipment.Barcode.StartsWith("P");
 
-                if (isItPackage)
+                try
                 {
-                    await HandleShipment(shipment, deliveryPoint);
+                    if (isItPackage)
+                    {
+                        await HandleShipment(shipment, deliveryPoint);
+                    }
+                    else
+                    {
+                        await HandleSack(shipment, deliveryPoint);
+                    }
                 }
-                else
+                catch (DomainException ex)
                 {
-                    await HandleSack(shipment, deliveryPoint);
+                    domainMessages.Add((shipment.Barcode, ex.Message));
                 }
             }
         }
 
         await _packageRepository.SaveChangesAsync();
         await _sackRepository.SaveChangesAsync();
+
+        LogInvalidOperations(domainMessages);
+
         return Unit.Value;
     }
 
@@ -57,15 +70,7 @@ public class DeliverShipmentsCommandHandler : IRequestHandler<DeliverShipmentsCo
 
         package.Load();
 
-        try
-        {
-            package.Unload(deliveryPoint);
-        }
-        catch (DomainException ex)
-        {
-            // package can't be unloaded to this delivery point, we just skip.
-            _logger.LogInformation(ex.Message);
-        }
+        package.Unload(deliveryPoint);
     }
 
     private async Task HandleSack(Shipment shipment, DeliveryPointType deliveryPoint)
@@ -76,15 +81,13 @@ public class DeliverShipmentsCommandHandler : IRequestHandler<DeliverShipmentsCo
 
         sack.Load();
 
-        try
-        {
-            sack.Unload(deliveryPoint);
-        }
-        catch (DomainException ex)
-        {
-            // sack can't be unloaded to this delivery point, we just skip.
-            _logger.LogInformation(ex.Message);
-            return;
-        }
+        sack.Unload(deliveryPoint);
+    }
+
+    private void LogInvalidOperations(IEnumerable<(string Barcode, string Message)> domainMessages)
+    {
+        ConsoleTable
+            .From(domainMessages.Select(x => new { x.Barcode, x.Message }))
+                .Write(Format.Alternative);
     }
 }
