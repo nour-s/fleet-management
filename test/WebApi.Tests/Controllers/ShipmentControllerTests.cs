@@ -25,6 +25,7 @@ public class ShipmentsControllerTests
     {
         // Arrange
         var fakeRequest = new AutoFaker<Delivery>().Generate();
+
         _mediator.Setup(x => x.Send(It.IsAny<DeliverShipmentsCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(Unit.Value);
         _mediator.Setup(x => x.Send(It.IsAny<GetDeliveryStatusQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(fakeRequest);
 
@@ -35,6 +36,6 @@ public class ShipmentsControllerTests
         Assert.IsType<OkObjectResult>(result);
         var comparer = new CompareLogic(new ComparisonConfig());
 
-        _mediator.Verify(x => x.Publish(It.Is<DeliverShipmentsCommand>(x => comparer.Compare(x.Delivery, fakeRequest).AreEqual), It.IsAny<CancellationToken>()), Times.Once);
+        _mediator.Verify(x => x.Send(It.Is<DeliverShipmentsCommand>(x => comparer.Compare(x.Delivery, fakeRequest).AreEqual), It.IsAny<CancellationToken>()), Times.Once);
     }
 }
