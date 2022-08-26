@@ -1,5 +1,3 @@
-using System.Collections.ObjectModel;
-
 namespace Domain.Models;
 
 public record Sack(
@@ -32,6 +30,11 @@ public record Sack(
     public void Unload(DeliveryPointType deliveryPoint)
     {
         if (DeliveryPointType != deliveryPoint)
+        {
+            throw new ArgumentException($"Sack {Barcode} can't be unloaded to {deliveryPoint} because it is not the destination");
+        }
+
+        if (deliveryPoint == DeliveryPointType.Branch)
         {
             throw new ArgumentException($"Sack {Barcode} can't be unloaded to {deliveryPoint}");
         }
