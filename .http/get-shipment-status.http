@@ -1,0 +1,4 @@
+@barcode=C725800
+
+GET http://localhost:5000/shipments?barcode={{barcode}}
+Content-Type: application/json
