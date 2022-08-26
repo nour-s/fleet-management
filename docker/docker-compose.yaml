@@ -1,0 +1,13 @@
+version: "3.9"
+name: fleet-management
+
+networks:
+  app:
+
+services:
+  web-app:
+    container_name: fleet-management
+    build: ./
+    image: fleet-management
+    ports:
+      - "5000:80"
