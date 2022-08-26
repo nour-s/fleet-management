@@ -1,3 +1,5 @@
+using Domain.Exceptions;
+
 namespace Domain.Models;
 
 public record Package(
@@ -23,17 +25,17 @@ public record Package(
     {
         if (DeliveryPointType != deliveryPoint)
         {
-            throw new ArgumentException($"Package {Barcode} can't be unloaded to {deliveryPoint}");
+            throw new DomainException($"Package {Barcode} can't be unloaded to {deliveryPoint}");
         }
 
         if (Sack != null && deliveryPoint == DeliveryPointType.Branch)
         {
-            throw new ArgumentException($"A Package {Barcode} without a sack can't be unloaded to {deliveryPoint}");
+            throw new DomainException($"A Package {Barcode} without a sack can't be unloaded to {deliveryPoint}");
         }
 
         if (Sack == null && deliveryPoint == DeliveryPointType.TransferCentre)
         {
-            throw new ArgumentException($"A Package {Barcode} without a sack can't be unloaded to {deliveryPoint}");
+            throw new DomainException($"A Package {Barcode} without a sack can't be unloaded to {deliveryPoint}");
         }
 
         State = PackageState.Unloaded;

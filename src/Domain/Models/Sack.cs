@@ -1,3 +1,5 @@
+using Domain.Exceptions;
+
 namespace Domain.Models;
 
 public record Sack(
@@ -31,12 +33,12 @@ public record Sack(
     {
         if (DeliveryPointType != deliveryPoint)
         {
-            throw new ArgumentException($"Sack {Barcode} can't be unloaded to {deliveryPoint} because it is not the destination");
+            throw new DomainException($"Sack {Barcode} can't be unloaded to {deliveryPoint} because it is not the destination");
         }
 
         if (deliveryPoint == DeliveryPointType.Branch)
         {
-            throw new ArgumentException($"Sack {Barcode} can't be unloaded to {deliveryPoint}");
+            throw new DomainException($"Sack {Barcode} can't be unloaded to {deliveryPoint} because Branch doesn't accept it.");
         }
 
         foreach (var package in _packages)

@@ -1,3 +1,5 @@
+using Domain.Exceptions;
+
 namespace Domain.Tests;
 
 public class SackTests
@@ -52,21 +54,22 @@ public class SackTests
     public void Sack_Unload_Should_First_Unload_All_Packages()
     {
         // Arrange
+        var destination = DeliveryPointType.DistributionCentre;
         var sack = new AutoFaker<Sack>()
             .Configure(x => x.WithSkip<SackState>())
-            .RuleFor(x => x.DeliveryPointType, DeliveryPointType.Branch)
+            .RuleFor(x => x.DeliveryPointType, destination)
             .Generate();
 
         var packageFaker = new AutoFaker<Package>()
             .Configure(x => x.WithSkip<PackageState>())
-            .RuleFor(x => x.DeliveryPointType, DeliveryPointType.Branch);
+            .RuleFor(x => x.DeliveryPointType, destination);
 
         // Add random packages
         sack.AddPackage(packageFaker.Generate());
         sack.AddPackage(packageFaker.Generate());
 
         // Act
-        sack.Unload(DeliveryPointType.Branch);
+        sack.Unload(destination);
 
         // Assert
         Assert.All(sack.Packages, x => Assert.Equal(PackageState.Unloaded, x.State));
@@ -84,7 +87,7 @@ public class SackTests
         var wrongDeliveryPoint = DeliveryPointType.DistributionCentre;
 
         // Act && Assert
-        Assert.Throws<ArgumentException>(() => sack.Unload(wrongDeliveryPoint));
+        Assert.Throws<DomainException>(() => sack.Unload(wrongDeliveryPoint));
     }
 
     [Fact]
@@ -99,6 +102,6 @@ public class SackTests
         var wrongDeliveryPoint = DeliveryPointType.Branch;
 
         // Act && Assert
-        Assert.Throws<ArgumentException>(() => sack.Unload(wrongDeliveryPoint));
+        Assert.Throws<DomainException>(() => sack.Unload(wrongDeliveryPoint));
     }
 }

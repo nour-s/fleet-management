@@ -1,3 +1,5 @@
+using Domain.Exceptions;
+
 namespace Domain.Tests;
 
 public class PackageTest
@@ -34,7 +36,7 @@ public class PackageTest
 
         // Arrange
         var package = new AutoFaker<Package>()
-        .Configure(x => x.WithSkip<PackageState>())
+        .Configure(x => x.WithSkip<PackageState>().WithSkip<Sack>())
         .RuleFor(x => x.DeliveryPointType, deliveryPoint)
         .Generate();
 
@@ -53,7 +55,7 @@ public class PackageTest
         var wrongDeliveryPoint = DeliveryPointType.DistributionCentre;
 
         // Act && Assert
-        Assert.Throws<ArgumentException>(() => package.Unload(wrongDeliveryPoint));
+        Assert.Throws<DomainException>(() => package.Unload(wrongDeliveryPoint));
     }
 
     // Shipment should not be unloaded to a branch if there is a sack
@@ -64,7 +66,7 @@ public class PackageTest
         var package = new Package("12345", DeliveryPointType.Branch, 1) { Sack = new Sack("234", DeliveryPointType.Branch) };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>(() => package.Unload(DeliveryPointType.Branch));
+        Assert.Throws<DomainException>(() => package.Unload(DeliveryPointType.Branch));
     }
 
 
@@ -76,6 +78,6 @@ public class PackageTest
         var package = new Package("12345", DeliveryPointType.TransferCentre, 1) { Sack = null };
 
         // Act and Assert
-        Assert.Throws<ArgumentException>(() => package.Unload(DeliveryPointType.TransferCentre));
+        Assert.Throws<DomainException>(() => package.Unload(DeliveryPointType.TransferCentre));
     }
 }

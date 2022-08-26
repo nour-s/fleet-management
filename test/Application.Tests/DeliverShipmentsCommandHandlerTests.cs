@@ -73,7 +73,7 @@ public class DeliverShipmentsCommandHandlerTests
     public async Task Handle_Should_Process_A_Shipment_Of_Type_Sack()
     {
         // Arrange
-        var selectedDeliveryPoint = DeliveryPointType.Branch;
+        var selectedDeliveryPoint = DeliveryPointType.DistributionCentre;
         var sackBarcode = new Randomizer().Replace("C##########");
 
         var sack = new Sack(sackBarcode, selectedDeliveryPoint);

@@ -1,3 +1,4 @@
+using Domain.Exceptions;
 using Application.Persistence;
 using Domain.Models;
 using MediatR;
@@ -60,7 +61,7 @@ public class DeliverShipmentsCommandHandler : IRequestHandler<DeliverShipmentsCo
         {
             package.Unload(deliveryPoint);
         }
-        catch (ArgumentException ex)
+        catch (DomainException ex)
         {
             // package can't be unloaded to this delivery point, we just skip.
             _logger.LogInformation(ex.Message);
@@ -79,7 +80,7 @@ public class DeliverShipmentsCommandHandler : IRequestHandler<DeliverShipmentsCo
         {
             sack.Unload(deliveryPoint);
         }
-        catch (ArgumentException ex)
+        catch (DomainException ex)
         {
             // sack can't be unloaded to this delivery point, we just skip.
             _logger.LogInformation(ex.Message);
