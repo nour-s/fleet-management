@@ -55,27 +55,6 @@ You can think of it as an enum or a table.
 To set up the system above:
 We expect you to store the following parameters in a predefined way in a database of your choice. You can assign the data to the database of your choice in any way you want. You can improve your database (can also be in memory) and domain modelling in accordance with the following items.
 
-### Package State
-
-```mermaid
-flowchart TD
-    A[Created] -->|Load| B{Is it in Sack?}
-    B -->|Yes| C[Loaded In Sack]
-    B ---->|No| E[Loaded]
-    C -->|Unload| F[Unloaded]
-    E -->|Unload| F[Unloaded]
-```
-
-### Sack State
-
-```mermaid
-flowchart TD
-    B[Created] -->|Load| C[Loaded]
-    C-->|Unload| D{Has packages?}
-    D -->|Yes - Unload Package| C
-    D -->|No| E[Unloaded]
-```
-
 **1.** You can create the delivery points in the databases you choose with the following data.
 
 ### Delivery Points Table

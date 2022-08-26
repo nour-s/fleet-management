@@ -8,7 +8,7 @@ The project uses .NET 6 Web API and Entity Framework for Database.
 
 ## Architecture
 
-The project follows the Domain Driven design with the following concepts:
+The project follows the `Domain Driven` architecture with the following concepts:
 
 - CQRS (Command Query Responsibility Segregation)
 - Test Driven Development (As much as possible)
@@ -18,6 +18,8 @@ I used an in-memory database for the sake of simplicity. The database can be eas
 
 The database is automatically seeded with the data provided in the requirements.md file.
 Notice that the database will be reset on every run allowing you to test the system with different data every time.
+
+Check the docs folder for class diagram and state diagram.
 
 ## How to run
 
@@ -42,7 +44,7 @@ You can run the following command to start the project:
 dotnet run --project ./src/WebApi/WebApi.csproj
 ```
 
-Notice that the dotnet cli is available when installing the .NET SDK.
+Notice that the `dotnet cli` is available when installing the .NET SDK.
 
 #### Running tests:
 
@@ -93,15 +95,15 @@ I chose not to fix that as it will require fundamental changes to the architectu
 
 I also made those assumptions:
 
-- Package starts with "P"
-- Sack ends with "C"
-- The package takes the state `Loaded Into Sack` when loaded into the sack even though the requirments mentioned:
+- Packages' barcode start with "P"
+- Sacks' barcode start with "C"
+- The package takes the state `Loaded Into Sack` when loaded into the sack even though the requirements mentioned:
 
   `Shipments take “created” state when they are first created, switch to “loaded” state when they are loaded into a sack, and switch to “unloaded” when they are unloaded at the delivery point.`
 
 - The Sack takes the state “loaded” when it is loaded into a vehicle explicitly, there was no mention of such a case (apart from listing it in the Sack state table).
 - You will validate the state of shipment `P8988000120` manually (since I'm using an in-memory database this won't be easy, and requires some debugging.
-- The system is missing some edge cases handling such as unloading an unloaded shipment.
+- The system is missing some edge case handling such as unloading an unloaded shipment
 
 #### Tools I used
 
@@ -110,18 +112,3 @@ I also used it to create the class diagram for reference.
 
 `Mermaid` is supported by Github if you inserted it in Markdown files. You can also install a VS Code client that can render Mermaid diagrams in Markdown files.
 Check this article for more information [Mermaid in Github](https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/)
-
-What is missing:
-
-- Wrong state changes (such as unloading an unloaded shipment)
-- Unload the last package while it sack is still loaded.
-
-- A sack might be unloaded in the previous destination.
-- I use RestClient
-- How are you going to validate what is the status of "P8988000120" (that remained Created) ?
-- Database reset on every run.
-- Readme.Me
-- I use domain driven design
-- I use TDD
-- Commands to run
-- Docker

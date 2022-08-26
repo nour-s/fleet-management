@@ -8,7 +8,6 @@ classDiagram
 
         +AddPackage(Package)
         +Unload(deliveryPoint)
-        +UnloadPackage(bacode, deliveryPoint)
     }
 
     class Package{
